@@ -1,0 +1,15 @@
+body {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  align-items: center;
+  margin: 0 auto;
+
+  #titulo {
+    font-size: 3rem;
+    background: #cf0000;
+    background: linear-gradient(to right, #0059ff 0%, #06ad01 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}

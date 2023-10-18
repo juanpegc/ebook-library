@@ -1,0 +1,8 @@
+<app-nav></app-nav>
+
+<div class="content bg-secondary d-flex flex-column">
+
+    <h1>Bienvenido {{user.attributes.nickname}}</h1>
+    <button class="btn btn-primary" routerLink="/libros">Ver libro</button>
+    <app-spinner *ngIf="loading"></app-spinner>
+</div>

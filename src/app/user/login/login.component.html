@@ -1,0 +1,69 @@
+<body class="bg-dark d-flex flex-column">
+    <i class="bi bi-arrow-left" id="backArrow" routerLink="/"></i>
+    <div *ngIf="user">
+        <div *ngIf="!forgotPassword"
+            class="container bg-secondary text-white border border-white rounded shadow p-3 mb-5" id="loginForm">
+
+            <form class="d-flex flex-column justify-content-center">
+                <h1 class="text-center">Inicia sesión</h1>
+
+                <div class=" mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="email@dominio.com"
+                        [(ngModel)]="user.email" name="email">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <div class="d-flex align-middle">
+                        <input type="password" class="form-control" id="password" placeholder="Contraseña"
+                            [(ngModel)]="user.password" name="password">
+                        <span (click)="showPassword()" class="ms-1">
+                            <i *ngIf="this.hidden" class="bi bi-eye-fill showPassword"></i>
+                            <i *ngIf="!this.hidden" class="bi bi-eye-slash-fill showPassword"></i>
+                        </span>
+                    </div>
+                </div>
+                <a class="forgotpassword mb-2" (click)="forgotPasswordFunction()">¿Has olvidado tu contraseña?</a>
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-primary" (click)="signInWithCognito()">¡Vamos!</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <div *ngIf="forgotPassword" class="container bg-secondary text-white border border-white rounded shadow p-3 mb-5"
+        id="loginForm">
+
+        <div class="d-flex flex-column justify-content-center">
+            <div>
+                <h2>He olvidado mi contraseña</h2>
+                <p>Se ha enviado un código a {{user.email}}</p>
+            </div>
+
+            <div class="form d-flex flex-column justify-content-center ">
+                <input type="text" class="form-control mb-3" name="verificationCode"
+                    placeholder="Código de verificación" [(ngModel)]="user.code">
+                <div class="d-flex mb-3">
+                    <input type="password" class="form-control" id="password" placeholder="Nueva contraseña"
+                        [(ngModel)]="newPassword" minlength="8">
+                    <span (click)="showPassword()" class="ms-1 showPassword">
+                        <i *ngIf="this.hidden" class="bi bi-eye-fill "></i>
+                        <i *ngIf="!this.hidden" class="bi bi-eye-slash-fill"></i>
+                    </span>
+                </div>
+
+                <button class="btn btn-outline-info" (click)="newPasswordSubmit()">Crear nueva
+                    contraseña</button>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <app-alerta *ngIf="showAlert" (cerrar)="showAlert=false" [mensaje]="alertMessage"></app-alerta>
+    <app-spinner *ngIf="loading"></app-spinner>
+
+</body>

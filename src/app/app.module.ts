@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { InicioComponent } from './inicio/inicio.component';
 import { AlertaComponent } from './shared/alerta/alerta.component';
 import { LibrosComponent } from './libros/libros.component';
+import { NavlibroComponent } from './shared/navlibro/navlibro.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { LibrosComponent } from './libros/libros.component';
     InicioComponent,
     AlertaComponent,
     LibrosComponent,
+    NavlibroComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],

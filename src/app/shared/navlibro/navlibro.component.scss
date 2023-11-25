@@ -1,0 +1,68 @@
+.navbar-brand {
+  color: rgb(255, 65, 65);
+  transition: 0.2s color;
+}
+
+.navbar-brand:hover {
+  color: rgb(255, 96, 96);
+}
+
+.Btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition-duration: 0.3s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+  background-color: rgb(255, 65, 65);
+}
+
+.Btn i {
+  margin-left: 8px;
+  width: 100%;
+  font-size: 1.2em;
+  transition-duration: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text {
+  position: absolute;
+  right: 0%;
+  width: 0%;
+  opacity: 0;
+  color: white;
+  font-size: 1.2em;
+  font-weight: 600;
+  transition-duration: 0.3s;
+}
+/* hover effect on button width */
+.Btn:hover {
+  width: 100px;
+  border-radius: 40px;
+  transition-duration: 0.3s;
+}
+
+.Btn:hover i {
+  width: 10%;
+  transition-duration: 0.2s;
+  padding-left: 10px;
+}
+
+.Btn:hover .text {
+  opacity: 1;
+  width: 70%;
+  transition-duration: 0.3s;
+  padding-right: 10px;
+}
+
+.Btn:active {
+  transform: translate(2px, 2px);
+}

@@ -13,6 +13,9 @@ import { InicioComponent } from './inicio/inicio.component';
 import { AlertaComponent } from './shared/alerta/alerta.component';
 import { LibrosComponent } from './libros/libros.component';
 import { NavlibroComponent } from './shared/navlibro/navlibro.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { PerfilComponent } from './user/perfil/perfil.component';
+import { SubrayadosComponent } from './subrayados/subrayados.component';
 
 @NgModule({
   declarations: [
@@ -26,8 +29,10 @@ import { NavlibroComponent } from './shared/navlibro/navlibro.component';
     AlertaComponent,
     LibrosComponent,
     NavlibroComponent,
+    PerfilComponent,
+    SubrayadosComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
 })

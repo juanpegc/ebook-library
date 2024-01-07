@@ -47,4 +47,8 @@ export class CognitoService {
   public forgotPasswordSubmit(user: User, new_password: string): Promise<any> {
     return Auth.forgotPasswordSubmit(user.email, user.code, new_password);
   }
+
+  public deleteUser(user: User): Promise<any> {
+    return Auth.deleteUser();
+  }
 }

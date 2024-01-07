@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { CognitoService } from 'src/app/services/cognito.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +18,11 @@ export class RegisterComponent implements OnInit {
 
   hidden: boolean = true;
 
-  constructor(private router: Router, private cognitoService: CognitoService) {}
+  constructor(
+    private router: Router,
+    private cognitoService: CognitoService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.user = {} as User;
@@ -51,6 +56,9 @@ export class RegisterComponent implements OnInit {
         .confirmSignUp(this.user)
         .then(() => {
           this.loading = false;
+
+          this.userService.addUser(this.user);
+
           this.router.navigate(['/login']);
         })
         .catch((error: any) => {

@@ -1,6 +1,12 @@
 import { Component, HostListener, Output } from '@angular/core';
-import ePub, { Book } from 'epubjs';
+import { ActivatedRoute, Params } from '@angular/router';
+import ePub, { Book, EpubCFI } from 'epubjs';
 import { Rendition } from 'epubjs';
+import Annotations, { Annotation } from 'epubjs/types/annotations';
+import { Highlight } from '../models/highlight';
+import { HighlightService } from '../services/highlight.service';
+import { CognitoService } from '../services/cognito.service';
+import { BookService } from '../services/book.service';
 
 @Component({
   selector: 'app-libros',
@@ -10,16 +16,45 @@ import { Rendition } from 'epubjs';
 export class LibrosComponent {
   rendition!: Rendition;
   @Output() book: Book;
-  array: string[];
+  array: string[] = [];
   vista: boolean = true; // true=libro / false=seguido
   tema: boolean = true; // true=claro / false=oscuro
   ref: string = '';
 
+  loading: boolean = false;
+
+  url!: string;
+  userId: string;
+  bookId: string;
+  nombreLibro: string = '';
+  cfiRange: string = '';
+
   location: any;
 
-  constructor() {
-    this.book = ePub('https://s3.amazonaws.com/epubjs/books/alice.epub');
+  constructor(
+    private route: ActivatedRoute,
+    private cognitoService: CognitoService,
+    private highlightService: HighlightService,
+    private bookService: BookService
+  ) {
+    this.book = ePub(this.url);
+    this.userId = '';
+    this.bookId = '';
+    this.loading = true;
+    cognitoService.getUser().then((userInformation) => {
+      this.userId = userInformation.attributes.sub;
+    });
+  }
 
+  ngOnInit() {
+    this.route.params.subscribe((params: Params) => {
+      this.url = params['url'];
+      this.bookId = params['id'];
+      this.cfiRange = params['cfiRange'];
+      if (this.cfiRange != '') this.location = this.cfiRange;
+    });
+
+    this.book = ePub(this.url);
     this.renderizar();
 
     let array: any[] = [];
@@ -39,7 +74,7 @@ export class LibrosComponent {
 
       this.rendition = this.book.renderTo('area', {
         width: 800,
-        height: 650,
+        height: 850,
         spread: 'always',
       });
 
@@ -64,6 +99,19 @@ export class LibrosComponent {
     if (this.ref !== '') this.rendition.display(this.ref);
     else if (this.location) this.rendition.display(this.location);
     else this.rendition.display();
+
+    this.highlightService
+      .getHighlightsByBook(this.bookId)
+      .subscribe((highlights) => {
+        highlights.forEach((highlight) =>
+          this.rendition.annotations.highlight(highlight.cfiRange)
+        );
+      });
+
+    this.loading = false;
+    this.rendition.on('selected', (cfiRange: string, contents: any) => {
+      this.nuevoSubrayado(cfiRange, contents);
+    });
   }
 
   next() {
@@ -109,6 +157,36 @@ export class LibrosComponent {
       document.getElementById('area')?.classList.add('claro');
       document.getElementById('area')?.classList.remove('oscuro');
     }
+  }
+
+  nuevoSubrayado(cfiRange: string, contents: any) {
+    this.rendition.annotations.highlight(cfiRange);
+    let text: string = '';
+    this.book.getRange(cfiRange).then((range) => {
+      text = range.toString();
+      this.bookService.getBook(this.bookId).subscribe((libro) => {
+        this.nombreLibro = libro[0].nombre;
+
+        let subrayado: Highlight = {
+          id: '',
+          texto: text,
+          cfiRange: cfiRange,
+          idLibro: this.bookId,
+          fecha: new Date(),
+          idUser: this.userId,
+          nombreLibro: this.nombreLibro,
+        };
+
+        this.highlightService.addHighlight(this.userId, subrayado).subscribe();
+      });
+    });
+
+    if (contents) contents.window.getSelection().removeAllRanges();
+  }
+
+  irASubrayado(range: string) {
+    this.location = range;
+    this.renderizar();
   }
 
   @HostListener('document:keydown', ['$event'])

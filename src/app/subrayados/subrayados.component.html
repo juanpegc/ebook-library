@@ -1,0 +1,29 @@
+<app-nav></app-nav>
+
+
+<div class="content bg-secondary d-flex flex-column">
+    <h1>Tus subrayados</h1>
+
+    <h2 *ngIf="subrayados.length === 0">Aún no has subrayado nada</h2>
+    <div id="subrayados" class="d-flex flex-column">
+        <div *ngFor="let subrayado of subrayados" class="card mb-3" style="width: 48rem;">
+            <i class="bi bi-chat-left-quote-fill position-absolute top-0 end-0 fs-2 text-primary"></i>
+            <div class="card-body">
+                <h5 class="card-title">{{subrayado.nombreLibro}}</h5>
+                <h6 class="card-subtitle mb-2 text-body-secondary">Subrayado el día
+                    {{mostrarFecha(subrayado.fecha.toString())}} a
+                    las
+                    {{mostrarHora(subrayado.fecha.toString())}}</h6>
+                <p class="card-text">{{subrayado.texto}}</p>
+                <div>
+                    <button class="btn btn-info ms-2"
+                        (click)="irASubrayado(subrayado.nombreLibro, subrayado.idLibro, subrayado.cfiRange)">Ir</button>
+                    <button class="btn btn-outline-danger ms-2"
+                        (click)="eliminarSubrayado(subrayado.id)">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <app-spinner *ngIf="loading"></app-spinner>
+</div>

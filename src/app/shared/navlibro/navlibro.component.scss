@@ -66,3 +66,12 @@
 .Btn:active {
   transform: translate(2px, 2px);
 }
+
+#capitulos {
+  max-height: 400px;
+  overflow: auto;
+}
+
+.card:hover {
+  background-color: rgb(201, 200, 200);
+}

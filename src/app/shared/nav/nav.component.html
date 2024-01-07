@@ -1,4 +1,4 @@
-<nav class="navbar bg-dark border-bottom border-body navbar-expand-md " data-bs-theme="dark">
+<nav class="navbar bg-dark fixed-top border-bottom border-body navbar-expand-md mb-5" data-bs-theme="dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="/home">e-bOUCk</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -8,7 +8,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Librería</a>
+                    <a class="nav-link" href="/home">Librería</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -16,19 +16,24 @@
                         Aportaciones
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Subrayados</a></li>
+                        <li><a class="dropdown-item" href="/subrayados">Subrayados</a></li>
                         <li><a class="dropdown-item" href="#">Comentarios</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Ver perfil</a></li>
+                        <li><a class="dropdown-item" href="/perfil">Ver perfil</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link disabled" aria-disabled="true">Calendario</a>
                 </li>
+                <button class="btn btn-outline-success d-flex align-items-center ms-5" id="upload" type="button"
+                    data-bs-toggle="modal" data-bs-target="#modalSubir">
+                    <p class="mt-3 me-4">Añadir libro</p>
+                    <i class="bi bi-cloud-arrow-up"></i>
+                </button>
             </ul>
-            <button class="Btn" (click)="signOutWithCognito()">
+            <button class="Btn ms-5" (click)="signOutWithCognito()">
                 <i class="bi bi-box-arrow-right me-1"></i>
                 <div class="text">Salir</div>
             </button>
@@ -37,3 +42,25 @@
     </div>
 </nav>
 <app-spinner *ngIf="loading"></app-spinner>
+<div class="modal fade" id="modalSubir" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Subir archivo .epub a tu librería</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="formFile" class="form-label">Selecciona o arrastra el libro</label>
+                    <input class="form-control" type="file" id="files" (change)="comprobarArchivo($event)">
+                </div>
+                <p *ngIf="error" class="text-center text-danger">El archivo no es correcto</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" [disabled]="error || !libro" (click)="subirLibro()"
+                    data-bs-dismiss="modal">Subir</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,7 @@
 <body id="cambioTema" class="claro oscuro">
-    <app-navlibro [capitulos]="this.array" (tipoVista)="cambioVista($event)" (cambioCapitulo)="cambioCapitulo($event)"
-        (cambioTema)="cambioTema($event)"></app-navlibro>
+    <app-navlibro [capitulos]="this.array" [bookId]="this.bookId" (tipoVista)="cambioVista($event)"
+        (cambioCapitulo)="cambioCapitulo($event)" (cambioTema)="cambioTema($event)"
+        (irASubrayado)="irASubrayado($event)"></app-navlibro>
     <div id="vista" class="d-flex justify-content-center flex-row pt-5">
         <button id="cambioTema" class="Btn claro oscuro" (click)="previous()"><i
                 class="bi bi-arrow-left-circle"></i></button>
@@ -10,7 +11,8 @@
         <button id="cambioTema" class="Btn claro oscuro" (click)="next()"><i
                 class="bi bi-arrow-right-circle"></i></button>
     </div>
-    <p class="text-center claro oscuro" id="cambioTema">¡Hey! Puedes usar las flechas del teclado (Pincha
+    <app-spinner *ngIf="loading"></app-spinner>
+    <p class="text-center text-danger">¡Hey! Puedes usar las flechas del teclado (Pincha
         aquí si no te
         funciona)</p>
 </body>

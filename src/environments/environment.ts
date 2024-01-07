@@ -4,4 +4,8 @@ export const environment = {
     userPoolId: 'eu-west-2_S4Pxwbpzl',
     userPoolWebClientId: 'aq0jknhsrmu86gausptp64e5t',
   },
+  server: {
+    url: 'http://localhost',
+    port: '3000',
+  },
 };

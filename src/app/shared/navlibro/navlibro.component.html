@@ -13,8 +13,10 @@
                         Tus anotaciones
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Comentarios</a></li>
-                        <li><a class="dropdown-item" href="#">Subrayados</a></li>
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalSubrayados"
+                                (click)="this.obtenerSubrayados()">Subrayados</a>
+                        </li>
+                        <li><a class=" dropdown-item" href="#">Comentarios</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -22,7 +24,7 @@
                         aria-expanded="false">
                         Capitulos
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" id="capitulos">
                         <li *ngFor="let capitulo of this.capitulos">
                             <button class="dropdown-item"
                                 (click)="rutaCapitulo(capitulo.href)">{{capitulo.label}}</button>
@@ -51,3 +53,34 @@
     </div>
 </nav>
 <app-spinner *ngIf="loading"></app-spinner>
+
+
+<div class="modal" id="modalSubrayados" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Subrayados de: {{nombreLibro}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6 *ngIf="subrayados.length === 0">Aún no has subrayado nada en este libro</h6>
+                <div *ngFor="let subrayado of subrayados" class="card mb-3" style="width: 45rem;">
+                    <i class="bi bi-chat-left-quote-fill position-absolute top-0 end-0 fs-2 text-primary"></i>
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-body-secondary">Subrayado el día
+                            {{mostrarFecha(subrayado.fecha.toString())}} a
+                            las
+                            {{mostrarHora(subrayado.fecha.toString())}}</h6>
+                        <p class="card-text">{{subrayado.texto}}</p>
+                        <button class="btn btn-outline-info ms-2" (click)="navegarASubrayado(subrayado)">Ir</button>
+                        <button class="btn btn-outline-danger ms-2"
+                            (click)="eliminarSubrayado(subrayado.id)">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

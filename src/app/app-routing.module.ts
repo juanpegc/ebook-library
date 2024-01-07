@@ -5,13 +5,17 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './user/register/register.component';
 import { InicioComponent } from './inicio/inicio.component';
 import { LibrosComponent } from './libros/libros.component';
+import { PerfilComponent } from './user/perfil/perfil.component';
+import { SubrayadosComponent } from './subrayados/subrayados.component';
 
 const routes: Routes = [
   { path: '', component: InicioComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'libros', component: LibrosComponent },
+  { path: 'libros/:url/:id/:cfiRange', component: LibrosComponent },
+  { path: 'subrayados', component: SubrayadosComponent },
+  { path: 'perfil', component: PerfilComponent },
 ];
 
 @NgModule({

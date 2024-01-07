@@ -1,8 +1,25 @@
 <app-nav></app-nav>
 
 <div class="content bg-secondary d-flex flex-column">
+    <h1>Tus libros</h1>
 
-    <h1>Bienvenido {{user.attributes.nickname}}</h1>
-    <button class="btn btn-primary" routerLink="/libros">Ver libro</button>
+    <div id="libros" class="d-flex flex-wrap">
+        <div *ngFor="let libro of books" class="card mb-2 me-2" (click)="verLibro(libro.nombre, libro.id)"
+            style="width: 18rem">
+            <img src="{{covers.get(libro.id)}}" class="card-img-top" alt="Portada de {{libro.nombre}}"
+                onerror="this.src = 'https://www.marytribble.com/wp-content/uploads/2020/12/book-cover-placeholder.png'">
+            <div class="card-body">
+                <h5 class="card-title">{{libro.nombre}}</h5>
+                <!--
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                -->
+            </div>
+            <div class="card-body">
+                <a href="#" class="card-link">Continuar lectura</a>
+                <a (click)="descargarLibro($event, libro.nombre)" class="card-link">Descargar</a>
+            </div>
+        </div>
+    </div>
     <app-spinner *ngIf="loading"></app-spinner>
 </div>

@@ -1,0 +1,54 @@
+<app-nav></app-nav>
+<div class="bg-secondary d-flex flex-column text-center vh-100">
+    <h1 class="text-light">Perfil</h1>
+    <h2>Nombre: {{user?.nickname}}</h2>
+    <h2>Email: {{user?.email}}</h2>
+
+    <div>
+        <button class="btn btn-danger me-1" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar
+            perfil</button>
+        <button class="btn btn-info ms-1" data-bs-toggle="modal" data-bs-target="#modalEditar">Cambiar nombre</button>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Estas a punto de eliminar tu cuenta</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="formFile" class="form-label">Escribe lo siguiente en el cuadro de texto: <p
+                            class="fst-italic">{{mensajeConfirmacion}}</p></label>
+                    <input class="form-control" type="text" ng-blur="!disabled" [(ngModel)]="confirmacion">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" [disabled]="confirmacion !== mensajeConfirmacion"
+                    (click)="eliminarPerfil()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Editar datos</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Nombre</label>
+                    <input class="form-control" type="text" id="nombreNuevo" (blur)="editarNombre($event)">
+                </div>
+                <p *ngIf="error" class="text-center text-danger">El nombre no es correcto</p>
+                <p *ngIf="!error && hecho" class="text-center text-success">Cambiado ✓</p>
+            </div>
+        </div>
+    </div>
+</div>

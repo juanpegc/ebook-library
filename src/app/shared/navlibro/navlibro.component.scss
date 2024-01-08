@@ -75,3 +75,7 @@
 .card:hover {
   background-color: rgb(201, 200, 200);
 }
+
+.dropdown-menu .dropdown-item:hover {
+  cursor: pointer;
+}

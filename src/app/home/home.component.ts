@@ -17,6 +17,8 @@ export class HomeComponent implements OnInit {
   loading: boolean = false;
   books: Book[] = [];
   covers: Map<string, string> = new Map<string, string>();
+  borrarId: string = '';
+  borrarNombre: string = '';
 
   constructor(
     private router: Router,
@@ -56,16 +58,34 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  verLibro(nombre: string, idBook: string) {
-    this.bookService.getBookUrl(nombre).subscribe((url) => {
-      this.router.navigate([`/libros`, url, idBook, '']);
-    });
-  }
-
   descargarLibro(e: Event, nombre: string) {
     e.stopPropagation();
     this.bookService.getBookUrl(nombre).subscribe((url) => {
       window.open(url, '_blank');
+    });
+  }
+
+  continuarLectura(idBook: string, nombre: string) {
+    this.bookService.getBookUrl(nombre).subscribe((url) => {
+      this.bookService.getCurrentPosition(idBook).subscribe((position) => {
+        let posicion = position[0].position;
+        if (!posicion) posicion = '';
+        this.router.navigate([`/libros`, url, idBook, posicion]);
+      });
+    });
+  }
+
+  confirmarBorrado(idBook: string, nombre: string) {
+    this.borrarId = idBook;
+    this.borrarNombre = nombre;
+  }
+
+  borrarLibro(e: Event, idBook: string, nombre: string) {
+    e.stopPropagation();
+    this.bookService.deleteBook(idBook).subscribe(() => {
+      this.bookService
+        .deleteBookFromS3(nombre)
+        .subscribe(() => location.reload());
     });
   }
 }

@@ -1,0 +1,29 @@
+<app-nav></app-nav>
+
+
+<div class="content bg-secondary d-flex flex-column">
+    <h1>Tus comentarios</h1>
+
+    <h2 *ngIf="comentarios.length === 0">Aún no has comentado nada</h2>
+    <div *ngFor="let comentario of comentarios" class="card mb-3" style="width: 45rem;">
+        <i class="bi bi-chat-left-dots-fill position-absolute top-0 end-0 fs-2 text-primary"></i>
+        <div class="card-body">
+            <h5 class="card-title">{{comentario.nombreLibro.split('.epub')[0]}}</h5>
+            <h6 class="card-subtitle mb-2 text-body-secondary">Añadido el día
+                {{mostrarFecha(comentario.fecha.toString())}} a
+                las
+                {{mostrarHora(comentario.fecha.toString())}}</h6>
+            <p class="card-text" *ngIf="!editando.get(comentario.id)">{{comentario.texto}}</p>
+            <div class="d-flex" *ngIf="editando.get(comentario.id)">
+                <textarea class="form-control" id="textoNuevo" aria-label="Edita el comentario"
+                    value="{{comentario.texto}}"></textarea>
+                <button class="btn btn-info ms-2" (click)="editarComentario(comentario.id)">Editar</button>
+            </div>
+            <button class="btn btn-outline-info mt-2" (click)="editarComentario(comentario.id)"
+                [disabled]="editando.get(comentario.id)">Editar</button>
+            <button class="btn btn-outline-danger mt-2 ms-2" (click)="eliminarComentario(comentario)">Eliminar</button>
+        </div>
+    </div>
+
+    <app-spinner *ngIf="loading"></app-spinner>
+</div>

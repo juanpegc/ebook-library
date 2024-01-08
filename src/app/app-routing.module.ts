@@ -7,6 +7,7 @@ import { InicioComponent } from './inicio/inicio.component';
 import { LibrosComponent } from './libros/libros.component';
 import { PerfilComponent } from './user/perfil/perfil.component';
 import { SubrayadosComponent } from './subrayados/subrayados.component';
+import { ComentariosComponent } from './comentarios/comentarios.component';
 
 const routes: Routes = [
   { path: '', component: InicioComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'libros/:url/:id/:cfiRange', component: LibrosComponent },
   { path: 'subrayados', component: SubrayadosComponent },
+  { path: 'comentarios', component: ComentariosComponent },
   { path: 'perfil', component: PerfilComponent },
 ];
 

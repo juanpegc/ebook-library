@@ -24,6 +24,11 @@ export class BookService {
     return this.http.get(`${this.serverUrl}/books/url/${name}`);
   }
 
+  //Conseguir posición de donde se dejó por última vez
+  getCurrentPosition(id: string): Observable<any> {
+    return this.http.get(`${this.serverUrl}/books/${id}/position`);
+  }
+
   addBook(book: Book): Observable<Book> {
     return this.http.post<Book>(`${this.serverUrl}/books`, {
       nombre: book.nombre,
@@ -31,12 +36,22 @@ export class BookService {
     });
   }
 
+  addCurrentPosition(currentPosition: string, idBook: string): Observable<any> {
+    return this.http.post(`${this.serverUrl}/books/${idBook}/position`, {
+      position: currentPosition,
+    });
+  }
+
   updateBook(book: Book): Observable<Book> {
     return this.http.put<Book>(`${this.serverUrl}/books`, book);
   }
 
-  deleteBook(id: string): Observable<unknown> {
+  deleteBook(id: string): Observable<any> {
     return this.http.delete(`${this.serverUrl}/books/${id}`);
+  }
+
+  deleteBookFromS3(nombre: string): Observable<any> {
+    return this.http.delete(`${this.serverUrl}/books/s3/${nombre}`);
   }
 
   uploadBook(file: File | undefined | null): Observable<any> {

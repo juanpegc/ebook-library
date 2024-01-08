@@ -62,6 +62,17 @@ export class LibrosComponent {
       toc.forEach((chapter) => array.push(chapter));
     });
     this.array = array;
+
+    window.onbeforeunload = () => {
+      this.guardarPosicion();
+    };
+  }
+
+  guardarPosicion() {
+    let location: any = this.rendition.currentLocation();
+    this.bookService
+      .addCurrentPosition(location.start.cfi, this.bookId)
+      .subscribe();
   }
 
   renderizar() {

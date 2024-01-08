@@ -4,22 +4,49 @@
     <h1>Tus libros</h1>
 
     <div id="libros" class="d-flex flex-wrap">
-        <div *ngFor="let libro of books" class="card mb-2 me-2" (click)="verLibro(libro.nombre, libro.id)"
-            style="width: 18rem">
-            <img src="{{covers.get(libro.id)}}" class="card-img-top" alt="Portada de {{libro.nombre}}"
-                onerror="this.src = 'https://www.marytribble.com/wp-content/uploads/2020/12/book-cover-placeholder.png'">
+        <div *ngFor="let libro of books" class="card mb-2 me-2" style="width: 18rem">
+            <img src="{{covers.get(libro.id)}}" class="card-img-top" alt="Portada de {{libro.nombre}}" height="470px"
+                onerror="this.src = 'https://www.marytribble.com/wp-content/uploads/2020/12/book-cover-placeholder.png'"
+                (click)="continuarLectura(libro.id, libro.nombre)">
+            <a id="ojo" class="position-absolute bottom-50 end-50 mb-4"><i class="bi bi-eye-fill fs-1"></i></a>
             <div class="card-body">
-                <h5 class="card-title">{{libro.nombre}}</h5>
+                <a class="enlace" (click)="continuarLectura(libro.id, libro.nombre)">
+                    <h5 class="card-title">{{libro.nombre.split('.epub')[0]}}</h5>
+                </a>
                 <!--
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
                     card's content.</p>
                 -->
             </div>
             <div class="card-body">
-                <a href="#" class="card-link">Continuar lectura</a>
-                <a (click)="descargarLibro($event, libro.nombre)" class="card-link">Descargar</a>
+                <a data-bs-toggle="modal" data-bs-target="#modalEliminacion"
+                    (click)="confirmarBorrado(libro.id, libro.nombre)"
+                    class="enlace card-link fs-3 position-absolute bottom-0 start-0 link-danger link-offset-2 ms-2"><i
+                        class="bi bi-trash"></i></a>
+                <a (click)="descargarLibro($event, libro.nombre)"
+                    class="enlace card-link fs-3 position-absolute bottom-0 end-0 me-2 link-danger link-offset-2"><i
+                        class="bi bi-download"></i></a>
             </div>
         </div>
     </div>
     <app-spinner *ngIf="loading"></app-spinner>
+</div>
+
+<div class="modal fade" id="modalEliminacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">¿Estás seguro que quieres borrar este libro?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                (Esta acción no se puede deshacer)
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger"
+                    (click)="borrarLibro($event, borrarId, borrarNombre)">Eliminar</button>
+            </div>
+        </div>
+    </div>
 </div>

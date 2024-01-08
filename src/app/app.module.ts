@@ -16,6 +16,7 @@ import { NavlibroComponent } from './shared/navlibro/navlibro.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { PerfilComponent } from './user/perfil/perfil.component';
 import { SubrayadosComponent } from './subrayados/subrayados.component';
+import { ComentariosComponent } from './comentarios/comentarios.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { SubrayadosComponent } from './subrayados/subrayados.component';
     NavlibroComponent,
     PerfilComponent,
     SubrayadosComponent,
+    ComentariosComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],

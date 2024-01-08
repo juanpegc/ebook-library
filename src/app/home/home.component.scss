@@ -8,11 +8,42 @@
   margin: 0 auto;
 }
 
-.card:hover {
+.card img:hover {
   cursor: pointer;
   background-color: rgb(201, 200, 200);
 }
 
 app-nav {
   z-index: 100;
+}
+
+#ojo {
+  display: none;
+  cursor: pointer;
+  left: 120px;
+}
+
+#ojo i {
+  cursor: pointer;
+}
+
+.card img:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.card img:hover + #ojo {
+  display: block;
+  color: black;
+}
+
+.enlace {
+  text-decoration: none;
+  color: black;
+}
+
+.enlace :hover {
+  cursor: pointer;
+  text-decoration: underline;
+  color: rgb(255, 166, 0);
 }

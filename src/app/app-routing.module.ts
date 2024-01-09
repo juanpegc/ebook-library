@@ -8,6 +8,7 @@ import { LibrosComponent } from './libros/libros.component';
 import { PerfilComponent } from './user/perfil/perfil.component';
 import { SubrayadosComponent } from './subrayados/subrayados.component';
 import { ComentariosComponent } from './comentarios/comentarios.component';
+import { CalendarioComponent } from './calendario/calendario.component';
 
 const routes: Routes = [
   { path: '', component: InicioComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'libros/:url/:id/:cfiRange', component: LibrosComponent },
   { path: 'subrayados', component: SubrayadosComponent },
   { path: 'comentarios', component: ComentariosComponent },
+  { path: 'calendario', component: CalendarioComponent },
   { path: 'perfil', component: PerfilComponent },
 ];
 

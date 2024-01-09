@@ -17,6 +17,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { PerfilComponent } from './user/perfil/perfil.component';
 import { SubrayadosComponent } from './subrayados/subrayados.component';
 import { ComentariosComponent } from './comentarios/comentarios.component';
+import { CalendarioComponent } from './calendario/calendario.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 @NgModule({
   declarations: [
@@ -33,8 +36,9 @@ import { ComentariosComponent } from './comentarios/comentarios.component';
     PerfilComponent,
     SubrayadosComponent,
     ComentariosComponent,
+    CalendarioComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })],
   providers: [],
   bootstrap: [AppComponent],
 })

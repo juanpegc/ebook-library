@@ -3,4 +3,5 @@ export interface Book {
   url: string;
   nombre: string;
   userID: string;
+  fecha: Date;
 }

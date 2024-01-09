@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Comment } from '../models/comment';
 
@@ -12,16 +12,21 @@ export class CommentService {
 
   constructor(private http: HttpClient) {}
 
+  private handleError(error: HttpErrorResponse) {
+    console.error(error);
+    return throwError(error);
+  }
+
   getCommentsByBook(idBook: string): Observable<Comment[]> {
-    return this.http.get<Comment[]>(
-      `${this.serverUrl}/comments/book/${idBook}`
-    );
+    return this.http
+      .get<Comment[]>(`${this.serverUrl}/comments/book/${idBook}`)
+      .pipe(catchError(this.handleError));
   }
 
   getCommentsByUser(idUser: string): Observable<Comment[]> {
-    return this.http.get<Comment[]>(
-      `${this.serverUrl}/comments/user/${idUser}`
-    );
+    return this.http
+      .get<Comment[]>(`${this.serverUrl}/comments/user/${idUser}`)
+      .pipe(catchError(this.handleError));
   }
 
   addComment(comment: Comment): Observable<any> {
@@ -31,16 +36,22 @@ export class CommentService {
       libro: comment.idLibro,
       nombreLibro: comment.nombreLibro,
     };
-    return this.http.post(`${this.serverUrl}/comments/`, params);
+    return this.http
+      .post(`${this.serverUrl}/comments/`, params)
+      .pipe(catchError(this.handleError));
   }
 
   modifyComment(id: string, texto: string): Observable<Comment> {
-    return this.http.put<Comment>(`${this.serverUrl}/comments/${id}`, {
-      texto: texto,
-    });
+    return this.http
+      .put<Comment>(`${this.serverUrl}/comments/${id}`, {
+        texto: texto,
+      })
+      .pipe(catchError(this.handleError));
   }
 
   removeComment(id: string): Observable<any> {
-    return this.http.delete(`${this.serverUrl}/comments/${id}`);
+    return this.http
+      .delete(`${this.serverUrl}/comments/${id}`)
+      .pipe(catchError(this.handleError));
   }
 }

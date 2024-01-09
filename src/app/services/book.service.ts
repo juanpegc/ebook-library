@@ -55,6 +55,12 @@ export class BookService {
       .pipe(catchError(this.handleError));
   }
 
+  addRealName(idBook: string, nombre: string): Observable<any> {
+    return this.http
+      .put(`${this.serverUrl}/books/${idBook}/addRealName`, { nombre: nombre })
+      .pipe(catchError(this.handleError));
+  }
+
   addCurrentPosition(currentPosition: string, idBook: string): Observable<any> {
     return this.http
       .put(`${this.serverUrl}/books/${idBook}/addPosition`, {
@@ -103,5 +109,17 @@ export class BookService {
     return this.http
       .post<any>(`${this.serverUrl}/books/upload`, formData)
       .pipe(catchError(this.handleError));
+  }
+
+  addRating(idBook: string, rating: number): Observable<any> {
+    return this.http.put(`${this.serverUrl}/books/${idBook}/addRating`, {
+      rating: rating,
+    });
+  }
+
+  removeRating(idBook: string): Observable<any> {
+    return this.http.put(`${this.serverUrl}/books/${idBook}/removeRating`, {
+      rating: null,
+    });
   }
 }

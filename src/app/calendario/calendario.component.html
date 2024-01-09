@@ -28,13 +28,13 @@
 
         <h2 *ngIf=" libros.length===0">Aún no has añadido ningún libro</h2>
         <div class="d-flex flex-wrap">
-            <div *ngFor="let libro of libros" class="card mb-3 me-2" style="width: 30rem;">
+            <div *ngFor="let libro of libros; index as i" class="card mb-3 me-2" style="width: 30rem;">
                 <i *ngIf="!mostrarFecha(libro.date)"
                     class="bi bi-calendar-check position-absolute top-0 end-0 fs-2 me-1 text-primary"></i>
                 <i *ngIf="mostrarFecha(libro.date)"
                     class="bi bi-calendar-check-fill position-absolute top-0 end-0 fs-2 me-1 text-primary"></i>
                 <div class="card-body">
-                    <h5 class="card-title">{{libro.nombre.split('.epub')[0]}}</h5>
+                    <h5 class="card-title">{{libro.nombreReal}}</h5>
                     <div *ngIf="mostrarFecha(libro.date)">
                         <h6 class="card-subtitle mb-2 text-body-secondary">Lectura planificada para el día
                             {{mostrarFecha(libro.date)}}</h6>
@@ -43,14 +43,12 @@
                     <div *ngIf="!mostrarFecha(libro.date)">
                         <h6 class="card-subtitle mb-2 text-body-secondary">(No hay día planificado)</h6>
                         <div class="d-flex">
-                            <input class="form-control" id="fechaNueva" type="date" aria-label="Edita la fecha"
+                            <input class="form-control" id="fechaNueva{{i}}" type="date" aria-label="Edita la fecha"
                                 value="{{mostrarFecha(libro.date)}}" />
                             <button class="btn btn-info ms-2"
-                                (click)="cambiarFecha(libro.id, libro.nombre)">Añadir</button>
+                                (click)="cambiarFecha(libro.id, libro.nombreReal, i)">Añadir</button>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>

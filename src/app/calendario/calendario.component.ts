@@ -42,7 +42,7 @@ export class CalendarioComponent implements OnInit {
   viewDate: Date = new Date();
 
   loading: boolean = false;
-  editando: boolean = false;
+  primeraCarga: boolean = true;
 
   actions: CalendarEventAction[] = [
     {
@@ -80,7 +80,6 @@ export class CalendarioComponent implements OnInit {
     private cognitoService: CognitoService
   ) {
     registerLocaleData(localeEs);
-    // TODO SERÍA INTERESANTE AÑADIR VALORACIÓN A LIBROS
   }
 
   ngOnInit(): void {
@@ -88,8 +87,9 @@ export class CalendarioComponent implements OnInit {
     this.cognitoService.getUser().then((user: any) => {
       if (user) {
         this.user = user.attributes;
-        this.obtenerLibros();
+        this.obtenerLibros(true);
         this.loading = false;
+        this.primeraCarga = false;
       } else {
         this.loading = false;
         this.router.navigate(['/login']);
@@ -97,25 +97,26 @@ export class CalendarioComponent implements OnInit {
     });
   }
 
-  obtenerLibros() {
+  obtenerLibros(primeraCarga: boolean) {
     this.bookService.getAllBooksByUser(this.user.sub).subscribe((libros) => {
       this.libros = libros;
       this.libros.forEach((libro) => {
-        let fecha = '1900-01-01';
         if (libro.date) {
-          fecha = libro.date.split('T')[0];
-        }
+          let fecha: Date = new Date(libro.date.split('T')[0]);
+          let fechaBuena = new Date(fecha.getTime() + 24 * 60 * 60 * 1000);
 
-        this.fechasDeLectura.set(libro.id, {
-          start: endOfDay(new Date(fecha)),
-          title: libro.nombre.split('.epub')[0],
-          color: { ...colors['yellow'] },
-          actions: this.actions,
-        });
+          let evento = {
+            start: fechaBuena,
+            title: libro.nombreReal,
+            color: { ...colors['yellow'] },
+            actions: this.actions,
+          };
+
+          this.fechasDeLectura.set(libro.id, evento);
+          if (primeraCarga) this.events.push(evento);
+        }
       });
-      this.fechasDeLectura.forEach((value, key) => {
-        this.events.push(value);
-      });
+
       this.setView(this.view);
       this.viewDate = this.viewDate;
       document.getElementById('button')?.click();
@@ -136,36 +137,40 @@ export class CalendarioComponent implements OnInit {
     return res;
   }
 
-  cambiarFecha(idBook: string, nombre: string) {
-    let input = (<HTMLInputElement>document.getElementById('fechaNueva')).value;
-    this.fechasDeLectura.set(idBook, {
-      start: endOfDay(new Date(input)),
-      title: nombre.split('.epub')[0],
+  cambiarFecha(idBook: string, nombre: string, index: number) {
+    let input = (<HTMLInputElement>(
+      document.getElementById('fechaNueva' + index)
+    )).value;
+
+    let newEvento: CalendarEvent = {
+      start: new Date(input),
+      title: nombre,
       color: { ...colors['yellow'] },
       actions: this.actions,
-    });
+    };
+
+    this.fechasDeLectura.set(idBook, newEvento);
     this.bookService.addDate(idBook, input).subscribe();
-    this.fechasDeLectura.forEach((value, key) => {
-      this.events.push(value);
-    });
-    this.obtenerLibros();
+    this.events.push(newEvento);
+    this.obtenerLibros(false);
   }
 
   quitarFecha(idBook: string) {
     let evento = this.fechasDeLectura.get(idBook);
     if (evento) {
       let newEvento: CalendarEvent = {
-        start: endOfDay(new Date('1900-01-01')),
+        start: new Date('1900-01-01'),
         title: evento.title,
         color: { ...colors['yellow'] },
         actions: this.actions,
       };
       this.fechasDeLectura.set(idBook, newEvento);
+      this.events.splice(
+        this.events.findIndex((elem) => elem.title == newEvento.title),
+        1
+      );
     }
     this.bookService.removeDate(idBook).subscribe();
-    this.fechasDeLectura.forEach((value, key) => {
-      this.events.push(value);
-    });
-    this.obtenerLibros();
+    this.obtenerLibros(false);
   }
 }

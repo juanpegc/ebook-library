@@ -52,7 +52,7 @@ export class NavlibroComponent implements OnInit {
 
   ngOnInit(): void {
     this.bookService.getBook(this.bookId).subscribe((libro) => {
-      this.nombreLibro = libro[0].nombre;
+      this.nombreLibro = libro[0].nombreReal;
     });
     this.getUserDetails();
     this.obtenerSubrayados();

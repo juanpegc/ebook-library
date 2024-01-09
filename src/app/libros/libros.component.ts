@@ -176,7 +176,7 @@ export class LibrosComponent {
     this.book.getRange(cfiRange).then((range) => {
       text = range.toString();
       this.bookService.getBook(this.bookId).subscribe((libro) => {
-        this.nombreLibro = libro[0].nombre;
+        this.nombreLibro = libro[0].nombreReal;
 
         let subrayado: Highlight = {
           id: '',

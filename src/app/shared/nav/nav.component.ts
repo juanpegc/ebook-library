@@ -58,8 +58,10 @@ export class NavComponent implements OnInit {
         id: '',
         url: '',
         nombre: this.libro?.name,
+        nombreReal: '',
         userID: this.user.sub,
         fecha: new Date(0),
+        rating: -1,
       };
       this.bookService.addBook(libro).subscribe(() => {
         location.reload();

@@ -35,8 +35,9 @@ export class RegisterComponent implements OnInit {
     if (this.user && this.user.email && this.user.password) {
       this.cognitoService
         .signUp(this.user)
-        .then(() => {
+        .then((response) => {
           this.loading = false;
+          this.user.sub = response.userSub;
           this.isConfirm = true;
         })
         .catch((error: any) => {
@@ -57,6 +58,7 @@ export class RegisterComponent implements OnInit {
         .then(() => {
           this.loading = false;
 
+          this.cognitoService.getUser();
           this.userService.addUser(this.user).subscribe();
 
           this.router.navigate(['/login']);

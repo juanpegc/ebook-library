@@ -185,7 +185,7 @@ export class LibrosComponent {
           idLibro: this.bookId,
           fecha: new Date(),
           idUser: this.userId,
-          nombreLibro: this.nombreLibro,
+          nombreLibro: libro[0].nombre,
         };
 
         this.highlightService.addHighlight(this.userId, subrayado).subscribe();

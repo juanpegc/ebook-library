@@ -70,7 +70,10 @@ export class SubrayadosComponent {
 
   irASubrayado(nombre: string, idBook: string, cfiRange: string) {
     this.bookService.getBookUrl(nombre).subscribe((url) => {
-      this.router.navigate([`/libros`, url, idBook, cfiRange]);
+      this.bookService.getBook(idBook).subscribe((libro) => {
+        if (libro.length == 0) alert('Este libro ya no está en tu librería');
+        else this.router.navigate([`/libros`, url, idBook, cfiRange]);
+      });
     });
   }
 }

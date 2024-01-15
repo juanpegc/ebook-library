@@ -44,24 +44,6 @@ export class CalendarioComponent implements OnInit {
   loading: boolean = false;
   primeraCarga: boolean = true;
 
-  actions: CalendarEventAction[] = [
-    {
-      label: '<i class="bi bi-pen-fill"></i>',
-      a11yLabel: 'Edit',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        console.log('Click on edit');
-      },
-    },
-    {
-      label: '<i class="bi bi-trash-fill"></i>',
-      a11yLabel: 'Delete',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter((iEvent) => iEvent !== event);
-        console.log('Click on delete');
-      },
-    },
-  ];
-
   fechasDeLectura: Map<string, CalendarEvent> = new Map<
     string,
     CalendarEvent
@@ -109,7 +91,6 @@ export class CalendarioComponent implements OnInit {
             start: fechaBuena,
             title: libro.nombreReal,
             color: { ...colors['yellow'] },
-            actions: this.actions,
           };
 
           this.fechasDeLectura.set(libro.id, evento);
@@ -146,13 +127,13 @@ export class CalendarioComponent implements OnInit {
       start: new Date(input),
       title: nombre,
       color: { ...colors['yellow'] },
-      actions: this.actions,
     };
 
     this.fechasDeLectura.set(idBook, newEvento);
-    this.bookService.addDate(idBook, input).subscribe();
-    this.events.push(newEvento);
-    this.obtenerLibros(false);
+    this.bookService.addDate(idBook, input).subscribe(() => {
+      this.events.push(newEvento);
+      this.obtenerLibros(false);
+    });
   }
 
   quitarFecha(idBook: string) {
@@ -162,7 +143,6 @@ export class CalendarioComponent implements OnInit {
         start: new Date('1900-01-01'),
         title: evento.title,
         color: { ...colors['yellow'] },
-        actions: this.actions,
       };
       this.fechasDeLectura.set(idBook, newEvento);
       this.events.splice(
@@ -170,7 +150,8 @@ export class CalendarioComponent implements OnInit {
         1
       );
     }
-    this.bookService.removeDate(idBook).subscribe();
-    this.obtenerLibros(false);
+    this.bookService.removeDate(idBook).subscribe(() => {
+      this.obtenerLibros(false);
+    });
   }
 }

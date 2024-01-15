@@ -57,7 +57,7 @@ export class RegisterComponent implements OnInit {
         .then(() => {
           this.loading = false;
 
-          this.userService.addUser(this.user);
+          this.userService.addUser(this.user).subscribe();
 
           this.router.navigate(['/login']);
         })
